@@ -86,12 +86,16 @@ if [[ "${_build}" == "true" ]]; then
 elif [[ "${_aggregated}" == "true" ]]; then
   _src="${_url_raw}/${_tag}/chains.json"
   _sum='fd06aec69084e5e33dbbb3885d03e9869a2b56932e83e9665094f65d2ce51dec'
+  _license="COPYING"
+  _license_sum='0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0'
 fi
 source=(
   "${_src}"
+  "${_license}"
 )
 sha256sums=(
   "${_sum}"
+  "${_license_sum}"
 )
 
 validpgpkeys=(
@@ -137,6 +141,11 @@ package() {
       -Dm644 \
       "${srcdir}/chains.json" \
       "${pkgdir}/evm-${_pkg}/chains.json"
+    install \
+      -Dm644 \
+      "${srcdir}/COPYING" \
+      "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+
   fi
 }
 
