@@ -1,4 +1,4 @@
-# `solidity-compiler`
+# `evm-chains`
 
 universal recipe for [user repo](../themartiancompany/ur).
 
