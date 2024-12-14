@@ -140,7 +140,7 @@ package() {
     install \
       -Dm644 \
       "${srcdir}/chains.json" \
-      "${pkgdir}/evm-${_pkg}/chains.json"
+      "${pkgdir}/usr/lib/evm-${_pkg}/chains.json"
     install \
       -Dm644 \
       "${srcdir}/COPYING" \
