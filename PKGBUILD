@@ -20,8 +20,25 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Maintainer: Truocolo <truocolo@aol.com>
-# Maintainer: Pellegrino Prevete (tallero) <pellegrinoprevete@gmail.com>
+# Maintainer: Truocolo <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
+# Maintainer: Pellegrino Prevete (dvorak) <pellegrinoprevete@gmail.com>
+# Maintainer: Pellegrino Prevete (dvorak) <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
+_os="$( \
+  uname \
+    -o)"
+_evmfs_available="$( \
+  command \
+    -v \
+    "evmfs" || \
+    true)"
+if [[ ! -v "_evmfs" ]]; then
+  if [[ "${_evmfs_available}" != "" ]]; then
+    _evmfs="true"
+  elif [[ "${_evmfs_available}" == "" ]]; then
+    _evmfs="false"
+  fi
+fi
 _offline="false"
 _git="false"
 _build="false"
@@ -53,9 +70,6 @@ license=(
 depends=(
 )
 optdepends=()
-_os="$( \
-  uname \
-    -o)"
 if [[ "${_os}" != "GNU/Linux" ]] && \
    [[ "${_os}" == "Android" ]]; then
   depends+=(
@@ -78,6 +92,8 @@ provides=(
   "${pkgname}-list=${pkgver}"
   "${_og_ns}-${_pkg}-list=${pkgver}"
 )
+source=()
+sha256sums=()
 _url_raw="${_gh_raw}/${_ns}/${_pkg}"
 _url="${url}"
 _tag="${_commit}"
@@ -86,6 +102,15 @@ _tarname="${pkgname}-${_tag}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
 fi
+_evmfs_network="100"
+_evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+_evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
+_archive_sum="ced54845395b7dc1b6fe21dc5acbc59c784c2b9baaaf163e4cf04d4a7dfe46ed"
+_evmfs_archive_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sum}"
+_evmfs_archive_src="${_tarname}.zip::${_evmfs_archive_uri}"
+_archive_sig_sum="a9d532106be1b77fcf42d129e677a48f5b9f4cbada3f7244c577a6ebd41f8f6f"
+_archive_sig_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sig_sum}"
+_archive_sig_src="${_tarname}.zip.sig::${_archive_sig_uri}"
 if [[ "${_build}" == "true" ]]; then
   if [[ "${_git}" == true ]]; then
     makedepends+=(
@@ -103,16 +128,30 @@ if [[ "${_build}" == "true" ]]; then
     fi
   fi
 elif [[ "${_aggregated}" == "true" ]]; then
-  _src="${_url_raw}/${_tag}/chains.json"
-  _sum='fd06aec69084e5e33dbbb3885d03e9869a2b56932e83e9665094f65d2ce51dec'
+  if [[ "${_evmfs}" == "true" ]]; then
+    makedepends+=(
+      "evmfs"
+    )
+    _src="${_evmfs_archive_src}"
+    _sum="${_archive_sum}"
+    source+=(
+      "${_archive_sig_src}"
+    )
+    sha256sums+=(
+      "${_archive_sig_sum}"
+    )
+  elif [[ "${_evmfs}" == "false" ]]; then
+    _src="${_url_raw}/${_tag}/chains.json"
+    _sum='fd06aec69084e5e33dbbb3885d03e9869a2b56932e83e9665094f65d2ce51dec'
+  fi
   _license="COPYING"
   _license_sum='0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0'
 fi
-source=(
+source+=(
   "${_src}"
   "${_license}"
 )
-sha256sums=(
+sha256sums+=(
   "${_sum}"
   "${_license_sum}"
 )
@@ -121,6 +160,8 @@ validpgpkeys=(
   # Truocolo <truocolo@aol.com>
   '97E989E6CF1D2C7F7A41FF9F95684DBE23D6A3E9'
   'DD6732B02E6C88E9E27E2E0D5FC6652B9D9A6C01'
+  # Pellegrino Prevete (dvorak) <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
+  '12D8E3D7888F741E89F86EE0FEC8567A644F1D16'
 )
 
 check() {
