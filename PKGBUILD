@@ -47,14 +47,14 @@ _pkg=chains
 pkgname="evm-${_pkg}"
 pkgver="20241213"
 _gradle_pkgver="8.8"
-_commit="e932cba113c5518a83f20960f3ff9b65593adf5b"
+_commit="2ff67433bf952ec3d7b4919745f98d36113fa922"
 pkgrel=1
 _pkgdesc=(
   "Provides metadata for EVM chains."
 )
 pkgdesc="${_pkgdesc[*]}"
 arch=(
-  any
+  'any'
 )
 _http="https://github.com"
 # see https://github.com/ethereum-lists/chains/issues/6409
