@@ -105,7 +105,6 @@ fi
 _evmfs_network="17000"
 _evmfs_address="0x151920938488F193735e83e052368cD41F9d9362"
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
-_archive_sum="ced54845395b7dc1b6fe21dc5acbc59c784c2b9baaaf163e4cf04d4a7dfe46ed"
 _archive_sum="2179af10bfb1432951291003a52e8e49342b6075db6dcf8f43932c78c778b68b"
 _evmfs_archive_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sum}"
 _evmfs_archive_src="${_tarname}.zip::${_evmfs_archive_uri}"
