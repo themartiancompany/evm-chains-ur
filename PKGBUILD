@@ -272,7 +272,9 @@ package() {
             jq \
               ".chainId")"
         echo \
-          "${_network}" > \
+          "${_network}" | \
+          jq \
+            "[.]" > \
           "${pkgdir}/usr/lib/evm-${_pkg}/${_chain_id}.json"
         _msg=(
           "Written configuration file"
