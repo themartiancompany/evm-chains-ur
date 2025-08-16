@@ -262,6 +262,10 @@ package() {
           jq \
             "${_jq_query}" \
             "${_chains_file}")"
+        _msg=(
+          "Network '${_index}'"
+          "out of '${_index_end}'."
+        )
         _chain_id="$( \
           echo \
             "${_network}" | \
@@ -273,7 +277,9 @@ package() {
         _msg=(
           "Written configuration file"
           "for network with chain ID"
-          "'${_chain_id}'."
+          "'${_chain_id}'"
+          "('${_index}'"
+          "out of '${_index_end}')."
         )
         echo \
          "${_msg[*]}"
