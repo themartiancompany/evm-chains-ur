@@ -19,10 +19,14 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Maintainer: Truocolo <truocolo@aol.com>
-# Maintainer: Truocolo <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
-# Maintainer: Pellegrino Prevete (dvorak) <pellegrinoprevete@gmail.com>
-# Maintainer: Pellegrino Prevete (dvorak) <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
+# Maintainer:
+#   Truocolo
+#     <truocolo@aol.com>
+#     <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
+# Maintainer:
+#   Pellegrino Prevete (dvorak)
+#     <pellegrinoprevete@gmail.com>
+#     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
 _os="$( \
   uname \
@@ -39,13 +43,24 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
-_offline="false"
-_git="false"
-_build="false"
-_aggregated="true"
+if [[ ! -v "_split" ]]; then
+  _split="true"
+fi
+if [[ ! -v "_git" ]]; then
+  _git="false"
+fi
+if [[ ! -v "_offline" ]]; then
+  _offline="false"
+fi
+if [[ ! -v "_build" ]]; then
+  _build="false"
+fi
+if [[ ! -v "_aggregated" ]]; then
+  _aggregated="true"
+fi
 _pkg=chains
 pkgname="evm-${_pkg}"
-pkgver="20250227"
+pkgver="20250816"
 _gradle_pkgver="8.8"
 _commit="2ff67433bf952ec3d7b4919745f98d36113fa922"
 pkgrel=1
@@ -79,7 +94,14 @@ if [[ "${_os}" != "GNU/Linux" ]] && \
 fi
 optdepends+=(
 )
-makedepends=()
+makedepends=(
+  "coreutils"
+)
+if [[ "${_split}" == "true" ]]; then
+  makedepends+=(
+    "jq"
+  )
+fi
 if [[ "${_build}" == "true" ]]; then
   makedepends+=(
     "gradle${_gradle_pkgver}"
@@ -102,14 +124,15 @@ _tarname="${pkgname}-${_tag}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
 fi
-_evmfs_network="17000"
-_evmfs_address="0x151920938488F193735e83e052368cD41F9d9362"
+_evmfs_network="100"
+_evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
-_archive_sum="2179af10bfb1432951291003a52e8e49342b6075db6dcf8f43932c78c778b68b"
-_evmfs_archive_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sum}"
+_archive_sum="168bdbec23925a4f61ad97a1fd9cabeff0540ce15ad200d9da7b70c15a16f533"
+_archive_sig_sum="22d92cc8fc36aeffd3e0865f4b472cb44cf0f8f44fee9408d2b64f4bb45ae579"
+_evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
+_evmfs_archive_uri="${_evmfs_dir}/${_archive_sum}"
 _evmfs_archive_src="${_tarname}.zip::${_evmfs_archive_uri}"
-_archive_sig_sum="3e27de2920bd493d7990c536852e2405179c4f9989a8575fa1687a022ebae0e8"
-_archive_sig_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sig_sum}"
+_archive_sig_uri="${_evmfs_dir}/${_archive_sig_sum}"
 _archive_sig_src="${_tarname}.zip.sig::${_archive_sig_uri}"
 if [[ "${_build}" == "true" ]]; then
   if [[ "${_git}" == true ]]; then
@@ -171,7 +194,9 @@ check() {
     "ahah, the developers of this shit"
     "don't even check the sums of the sources"
     "they depend on and you want a build check"
-    "ahahahhahahahahaahahahahahahahahhahaha"
+    "ahahahhahahahahaahahahahahahahahhahaha."
+    "still its a valid observation"
+    "i havent ported it on-chain."
   )
   echo \
     "${_msg[*]}"
@@ -179,6 +204,13 @@ check() {
 
 package() {
   local \
+    _chain_id \
+    _chains_file \
+    _chains_amount \
+    _jq_query \
+    _index \
+    _index_end \
+    _network \
     _msg=()
   if [[ "${_build}" == "true" ]]; then
     _msg=(
@@ -197,15 +229,56 @@ package() {
     echo \
       "${_msg[*]}"
   elif [[ "${_aggregated}" == "true" ]]; then
+    _chains_file="${srcdir}/chains.json"
     install \
-      -Dm644 \
-      "${srcdir}/chains.json" \
+      -vDm644 \
+      "${_chains_file}" \
       "${pkgdir}/usr/lib/evm-${_pkg}/chains.json"
     install \
-      -Dm644 \
+      -vDm644 \
       "${srcdir}/COPYING" \
       "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-
+    if [[ "${_split}" == "true" ]]; then
+      _chains_amount="$( \
+        cat \
+          "${_chains_file}" | \
+          jq \
+            length)"
+      _msg=(
+        "Found '${_chains_amount}'"
+        "chains."
+      )
+      echo \
+       "${_msg[*]}"
+      _index_end="$(( \
+        "${_chains_amount}" - \
+        1 ))"
+      for _index \
+        in $(seq \
+               "0" \
+               "${_index_end}"); do
+        _jq_query="[.[]][${_index}]"
+        _network="$( \
+          jq \
+            "${_jq_query}" \
+            "${_chains_file}")"
+        _chain_id="$( \
+          echo \
+            "${_network}" | \
+            jq \
+              ".chainId")"
+        echo \
+          "${_network}" > \
+          "${pkgdir}/usr/lib/evm-${_pkg}/${_chain_id}.json"
+        _msg=(
+          "Written configuration file"
+          "for network with chain ID"
+          "'${_chain_id}'."
+        )
+        echo \
+         "${_msg[*]}"
+      done
+    fi
   fi
 }
 
