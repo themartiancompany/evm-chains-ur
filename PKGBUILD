@@ -149,7 +149,7 @@ _evmfs_archive_uri="${_evmfs_dir}/${_archive_sum}"
 _evmfs_archive_src="${_tarname}.${_archive_format}::${_evmfs_archive_uri}"
 _archive_sig_uri="${_evmfs_dir}/${_archive_sig_sum}"
 _archive_sig_src="${_tarname}.${_archive_format}.sig::${_archive_sig_uri}"
-if [[ "${_aggregated}" == "false" ]]; then
+if [[ "${_evmfs}" == "false" ]]; then
   if [[ "${_build}" == "true" ]]; then
     if [[ "${_git}" == true ]]; then
       makedepends+=(
@@ -157,6 +157,7 @@ if [[ "${_aggregated}" == "false" ]]; then
       )
       _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
       _sum="SKIP"
+    fi
     elif [[ "${_git}" == false ]]; then
       if [[ "${_tag_name}" == 'pkgver' ]]; then
         _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
@@ -167,27 +168,24 @@ if [[ "${_aggregated}" == "false" ]]; then
       fi
       _src="${_tarname}.${_archive_format}::${_uri}"
     fi
-  fi
-elif [[ "${_aggregated}" == "true" ]]; then
-  if [[ "${_evmfs}" == "true" ]]; then
-    makedepends+=(
-      "evmfs"
-    )
-    _src="${_evmfs_archive_src}"
-    _sum="${_archive_sum}"
-    source+=(
-      "${_archive_sig_src}"
-    )
-    sha256sums+=(
-      "${_archive_sig_sum}"
-    )
-  elif [[ "${_evmfs}" == "false" ]]; then
+  elif [[ "${_build}" == "true" ]]; then
     _src="${_url_raw}/${_tag}/chains.json"
     _sum="43dcec609e322444342fb4509d39a4345714f0fd59551f1133d19ef63c0ffec9"
-  fi
-  _license="COPYING"
-  _license_sum='0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0'
+elif [[ "${_evmfs}" == "true" ]]; then
+  makedepends+=(
+    "evmfs"
+  )
+  _src="${_evmfs_archive_src}"
+  _sum="${_archive_sum}"
+  source+=(
+    "${_archive_sig_src}"
+  )
+  sha256sums+=(
+    "${_archive_sig_sum}"
+  )
 fi
+_license="COPYING"
+_license_sum='0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0'
 source+=(
   "${_src}"
   "${_license}"
