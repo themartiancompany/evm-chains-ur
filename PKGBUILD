@@ -157,20 +157,27 @@ if [[ "${_evmfs}" == "false" ]]; then
       )
       _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
       _sum="SKIP"
-    fi
     elif [[ "${_git}" == false ]]; then
       if [[ "${_tag_name}" == 'pkgver' ]]; then
         _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
         _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
       elif [[ "${_tag_name}" == "commit" ]]; then
-        _uri="${_url}/archive/${_commit}.zip"
+        _uri="${_url}/archive/${_commit}.${_archive_format}"
         _sum='955be86b162169b67c4497bfc3db2d03263f2e47a48a3bb6586d59b014595c31'
       fi
       _src="${_tarname}.${_archive_format}::${_uri}"
     fi
   elif [[ "${_build}" == "false" ]]; then
-    _src="${_url_raw}/${_tag}/chains.json"
-    _sum="43dcec609e322444342fb4509d39a4345714f0fd59551f1133d19ef63c0ffec9"
+    if [[ "${_git_http}" == "github" ]]; then
+      _src_name="${_pkg}.json"
+      _uri="${_url_raw}/${_tag}/${_src_name}"
+      _sum="43dcec609e322444342fb4509d39a4345714f0fd59551f1133d19ef63c0ffec9"
+    elif [[ "${_git_http}" == "gitlab" ]]; then
+      _src_name="${_tarname}.${_archive_format}"
+      _uri="${_url}/-/archive/${_src_name}"
+      _sum="c048063ee8247752115e4f057ea916be400cbf934e44a5f827809bfb1cca7a9d"
+    fi
+    _src="${_src_name}::${_uri}"
 elif [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
