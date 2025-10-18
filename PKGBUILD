@@ -77,7 +77,7 @@ _pkg=chains
 pkgname="evm-${_pkg}"
 pkgver="20250816"
 _gradle_pkgver="8.8"
-_commit="2ff67433bf952ec3d7b4919745f98d36113fa922"
+_commit="3a0a229cdd6e4b7e8621d34441d936282c3f5085"
 pkgrel=1
 _pkgdesc=(
   "Provides metadata for EVM chains."
