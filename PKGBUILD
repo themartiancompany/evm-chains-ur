@@ -178,6 +178,7 @@ if [[ "${_evmfs}" == "false" ]]; then
       _sum="c048063ee8247752115e4f057ea916be400cbf934e44a5f827809bfb1cca7a9d"
     fi
     _src="${_src_name}::${_uri}"
+  fi
 elif [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
