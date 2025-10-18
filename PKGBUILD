@@ -168,7 +168,7 @@ if [[ "${_evmfs}" == "false" ]]; then
       fi
       _src="${_tarname}.${_archive_format}::${_uri}"
     fi
-  elif [[ "${_build}" == "true" ]]; then
+  elif [[ "${_build}" == "false" ]]; then
     _src="${_url_raw}/${_tag}/chains.json"
     _sum="43dcec609e322444342fb4509d39a4345714f0fd59551f1133d19ef63c0ffec9"
 elif [[ "${_evmfs}" == "true" ]]; then
