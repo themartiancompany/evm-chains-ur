@@ -49,14 +49,29 @@ fi
 if [[ ! -v "_git" ]]; then
   _git="false"
 fi
+if [[ ! -v "_git_http" ]]; then
+  _git_http="gitlab"
+fi
 if [[ ! -v "_offline" ]]; then
   _offline="false"
 fi
 if [[ ! -v "_build" ]]; then
   _build="false"
 fi
-if [[ ! -v "_aggregated" ]]; then
-  _aggregated="true"
+if [[ "${_evmfs}" == "true" ]]; then
+  if [[ ! -v "_aggregated" ]]; then
+    _aggregated="true"
+  fi
+  _archive_format="tar.xz"
+elif [[ "${_evmfs}" == "false" ]]; then
+  if [[ ! -v "_aggregated" ]]; then
+    _aggregated="false"
+  fi
+  if [[ "${_git_http}" == "gitlab" ]]; then
+  _archive_format="tar.gz"
+  elif [[ "${_git_http}" == "github" ]]; then
+    _archive_format="zip"
+  fi
 fi
 _pkg=chains
 pkgname="evm-${_pkg}"
@@ -71,7 +86,7 @@ pkgdesc="${_pkgdesc[*]}"
 arch=(
   'any'
 )
-_http="https://github.com"
+_http="https://${_git_http}.com"
 # see https://github.com/ethereum-lists/chains/issues/6409
 # to learn why we this package has been forked
 _og_ns="ethereum-lists"
@@ -131,23 +146,26 @@ _archive_sum="168bdbec23925a4f61ad97a1fd9cabeff0540ce15ad200d9da7b70c15a16f533"
 _archive_sig_sum="22d92cc8fc36aeffd3e0865f4b472cb44cf0f8f44fee9408d2b64f4bb45ae579"
 _evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
 _evmfs_archive_uri="${_evmfs_dir}/${_archive_sum}"
-_evmfs_archive_src="${_tarname}.zip::${_evmfs_archive_uri}"
+_evmfs_archive_src="${_tarname}.${_archive_format}::${_evmfs_archive_uri}"
 _archive_sig_uri="${_evmfs_dir}/${_archive_sig_sum}"
-_archive_sig_src="${_tarname}.zip.sig::${_archive_sig_uri}"
-if [[ "${_build}" == "true" ]]; then
-  if [[ "${_git}" == true ]]; then
-    makedepends+=(
-      "git"
-    )
-    _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
-    _sum="SKIP"
-  elif [[ "${_git}" == false ]]; then
-    if [[ "${_tag_name}" == 'pkgver' ]]; then
-      _src="${_tarname}.tar.gz::${_url}/archive/refs/tags/${_tag}.tar.gz"
-      _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
-    elif [[ "${_tag_name}" == "commit" ]]; then
-      _src="${_tarname}.zip::${_url}/archive/${_commit}.zip"
-      _sum='955be86b162169b67c4497bfc3db2d03263f2e47a48a3bb6586d59b014595c31'
+_archive_sig_src="${_tarname}.${_archive_format}.sig::${_archive_sig_uri}"
+if [[ "${_aggregated}" == "false" ]]; then
+  if [[ "${_build}" == "true" ]]; then
+    if [[ "${_git}" == true ]]; then
+      makedepends+=(
+        "git"
+      )
+      _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
+      _sum="SKIP"
+    elif [[ "${_git}" == false ]]; then
+      if [[ "${_tag_name}" == 'pkgver' ]]; then
+        _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
+        _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
+      elif [[ "${_tag_name}" == "commit" ]]; then
+        _uri="${_url}/archive/${_commit}.zip"
+        _sum='955be86b162169b67c4497bfc3db2d03263f2e47a48a3bb6586d59b014595c31'
+      fi
+      _src="${_tarname}.${_archive_format}::${_uri}"
     fi
   fi
 elif [[ "${_aggregated}" == "true" ]]; then
@@ -166,7 +184,7 @@ elif [[ "${_aggregated}" == "true" ]]; then
   elif [[ "${_evmfs}" == "false" ]]; then
     _src="${_url_raw}/${_tag}/chains.json"
     _sum="43dcec609e322444342fb4509d39a4345714f0fd59551f1133d19ef63c0ffec9"
-  fi
+  f
   _license="COPYING"
   _license_sum='0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0'
 fi
