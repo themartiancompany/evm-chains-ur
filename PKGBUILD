@@ -184,7 +184,7 @@ elif [[ "${_aggregated}" == "true" ]]; then
   elif [[ "${_evmfs}" == "false" ]]; then
     _src="${_url_raw}/${_tag}/chains.json"
     _sum="43dcec609e322444342fb4509d39a4345714f0fd59551f1133d19ef63c0ffec9"
-  f
+  fi
   _license="COPYING"
   _license_sum='0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0'
 fi
