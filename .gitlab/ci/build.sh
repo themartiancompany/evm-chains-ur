@@ -156,7 +156,6 @@ _requirements() {
   _fur_mini \
     "fur" \
     "${_fur_mini_opts[@]}"
-  _fur_release="0.0.1.1.1.1.1.1.1.1.1.1.1"
   _fur_opts+=(
     -v
     -p
