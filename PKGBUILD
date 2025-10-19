@@ -57,6 +57,7 @@ fi
 if [[ ! -v "_build" ]]; then
   _build="false"
 fi
+_og_ns="ethereum-lists"
 if [[ "${_evmfs}" == "true" ]]; then
   if [[ ! -v "_aggregated" ]]; then
     _aggregated="true"
@@ -69,7 +70,6 @@ elif [[ "${_evmfs}" == "false" ]]; then
   if [[ ! -v "_aggregated" ]]; then
     _aggregated="false"
   fi
-  _og_ns="ethereum-lists"
   if [[ "${_git_http}" == "gitlab" ]]; then
     if [[ ! -v "_ns" ]]; then
       _ns="tallero"
