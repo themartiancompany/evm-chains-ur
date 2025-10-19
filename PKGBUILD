@@ -66,9 +66,14 @@ elif [[ "${_evmfs}" == "false" ]]; then
   if [[ ! -v "_aggregated" ]]; then
     _aggregated="false"
   fi
+  _og_ns="ethereum-lists"
   if [[ "${_git_http}" == "gitlab" ]]; then
-  _archive_format="tar.gz"
+    if [[ ! -v "_ns" ]]; then
+      _ns="tallero"
+    fi
+    _archive_format="tar.gz"
   elif [[ "${_git_http}" == "github" ]]; then
+    _ns="themartiancompany"
     _archive_format="zip"
   fi
 fi
@@ -88,9 +93,6 @@ arch=(
 _http="https://${_git_http}.com"
 # see https://github.com/ethereum-lists/chains/issues/6409
 # to learn why we this package has been forked
-_og_ns="ethereum-lists"
-_tmc_ns="themartiancompany"
-_ns="${_tmc_ns}"
 url="${_http}/${_ns}/${pkgname}"
 _gh_raw="https://raw.githubusercontent.com"
 license=(
