@@ -61,6 +61,9 @@ if [[ "${_evmfs}" == "true" ]]; then
   if [[ ! -v "_aggregated" ]]; then
     _aggregated="true"
   fi
+    if [[ ! -v "_ns" ]]; then
+      _ns="themartiancompany"
+    fi
   _archive_format="tar.xz"
 elif [[ "${_evmfs}" == "false" ]]; then
   if [[ ! -v "_aggregated" ]]; then
@@ -73,7 +76,9 @@ elif [[ "${_evmfs}" == "false" ]]; then
     fi
     _archive_format="tar.gz"
   elif [[ "${_git_http}" == "github" ]]; then
-    _ns="themartiancompany"
+    if [[ ! -v "_ns" ]]; then
+      _ns="themartiancompany"
+    fi
     _archive_format="zip"
   fi
 fi
