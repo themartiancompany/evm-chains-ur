@@ -194,7 +194,7 @@ _requirements() {
     "${_commit}"
   mv \
     "${HOME}/${_pkgname#evm-}-${_commit}.tar.gz" \
-    "/home/user/${_pkgname}"
+    "/home/user/${_pkgname}/${_pkgname}-${_commit}.tar.gz"
 }
 
 _build() {
