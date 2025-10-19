@@ -193,7 +193,7 @@ _requirements() {
     "${_pkgname#evm-}" \
     "${_commit}"
   mv \
-    "${HOME}/${_pkgname}-${_commit}.tar.gz" \
+    "${HOME}/${_pkgname#evm-}-${_commit}.tar.gz" \
     "/home/user/${_pkgname}"
 }
 
