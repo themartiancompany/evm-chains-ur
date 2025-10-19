@@ -190,7 +190,7 @@ _requirements() {
       "_commit")"
   _gl_dl_mini \
     "${ns}" \
-    "${_pkgname}" \
+    "${_pkgname#evm-}" \
     "${_commit}"
   mv \
     "${HOME}/${_pkgname}-${_commit}.tar.gz" \
