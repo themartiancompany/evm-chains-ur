@@ -48,8 +48,8 @@ fi
 if [[ ! -v "_git" ]]; then
   _git="false"
 fi
-if [[ ! -v "_git_http" ]]; then
-  _git_http="gitlab"
+if [[ ! -v "_git_service" ]]; then
+  _git_service="gitlab"
 fi
 if [[ ! -v "_offline" ]]; then
   _offline="false"
@@ -70,12 +70,12 @@ elif [[ "${_evmfs}" == "false" ]]; then
   if [[ ! -v "_aggregated" ]]; then
     _aggregated="false"
   fi
-  if [[ "${_git_http}" == "gitlab" ]]; then
+  if [[ "${_git_service}" == "gitlab" ]]; then
     if [[ ! -v "_ns" ]]; then
-      _ns="tallero"
+      _ns="themartiancompany"
     fi
     _archive_format="tar.gz"
-  elif [[ "${_git_http}" == "github" ]]; then
+  elif [[ "${_git_service}" == "github" ]]; then
     if [[ ! -v "_ns" ]]; then
       _ns="themartiancompany"
     fi
@@ -87,7 +87,7 @@ pkgname="evm-${_pkg}"
 pkgver="20250816"
 _gradle_pkgver="8.8"
 _commit="3a0a229cdd6e4b7e8621d34441d936282c3f5085"
-pkgrel=2
+pkgrel=3
 _pkgdesc=(
   "Provides metadata for EVM chains."
 )
@@ -209,12 +209,13 @@ sha256sums+=(
   "${_sum}"
   "${_license_sum}"
 )
-
 validpgpkeys=(
-  # Truocolo <truocolo@aol.com>
+  # Truocolo
+  #   <truocolo@aol.com>
   '97E989E6CF1D2C7F7A41FF9F95684DBE23D6A3E9'
   'DD6732B02E6C88E9E27E2E0D5FC6652B9D9A6C01'
-  # Pellegrino Prevete (dvorak) <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
+  # Pellegrino Prevete (dvorak)
+  #   <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
   '12D8E3D7888F741E89F86EE0FEC8567A644F1D16'
 )
 
