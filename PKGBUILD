@@ -95,7 +95,7 @@ pkgdesc="${_pkgdesc[*]}"
 arch=(
   'any'
 )
-_http="https://${_git_http}.com"
+_http="https://${_git_service}.com"
 # see https://github.com/ethereum-lists/chains/issues/6409
 # to learn why we this package has been forked
 url="${_http}/${_ns}/${_pkg}"
@@ -175,11 +175,11 @@ if [[ "${_evmfs}" == "false" ]]; then
       _src="${_tarname}.${_archive_format}::${_uri}"
     fi
   elif [[ "${_build}" == "false" ]]; then
-    if [[ "${_git_http}" == "github" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
       _src_name="${_pkg}.json"
       _uri="${_url_raw}/${_tag}/${_src_name}"
       _sum="43dcec609e322444342fb4509d39a4345714f0fd59551f1133d19ef63c0ffec9"
-    elif [[ "${_git_http}" == "gitlab" ]]; then
+    elif [[ "${_git_service}" == "gitlab" ]]; then
       _src_name="${_tarname}.${_archive_format}"
       _uri="${_url}/-/archive/${_tag}/${_src_name}"
       _sum="c048063ee8247752115e4f057ea916be400cbf934e44a5f827809bfb1cca7a9d"
