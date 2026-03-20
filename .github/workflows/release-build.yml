@@ -1893,6 +1893,9 @@ jobs:
           #     recipe-get \
           #       "PKGBUILD" \
           #       "pkgbase")"
+          echo \
+            "$(uname \
+                 -o)"
           _evmfs="false" \
           _git_service="github" \
           recipe-get \

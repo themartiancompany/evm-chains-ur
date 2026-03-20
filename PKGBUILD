@@ -207,7 +207,7 @@ source+=(
 sha256sums+=(
   "${_sum}"
 )
-if [[ "${_os}" != "Msys2" ]]; then
+if [[ "${_os}" != "Msys" ]]; then
  source+=(
    "${_license}"
  )
@@ -272,7 +272,7 @@ package() {
       -vDm644 \
       "${_chains_file}" \
       "${pkgdir}/usr/lib/evm-${_pkg}/chains.json"
-    if [[ "${_os}" != "Msys2" ]]; then
+    if [[ "${_os}" != "Msys" ]]; then
       install \
         -vDm644 \
         "${srcdir}/COPYING" \
