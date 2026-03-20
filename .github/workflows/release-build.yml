@@ -1732,20 +1732,22 @@ jobs:
             PREFIX="/usr" \
             install
       - name:
-          Install latest Reallymakepkg.
+          Installs latest Reallymakepkg.
         run: |
           pacman \
             -Rdd \
             --noconfirm \
-            "reallymakepkg"
+            "reallymakepkg"; \
           git \
             clone \
-              --single-branch \
               --branch \
                 "main" \
-              "https://github.com/themartiancompany/reallymakepkg-src" \
+              --single-branch \
+              "https://github.com/themartiancompany/reallymakepkg" \
               "${HOME}/reallymakepkg-src" || \
           true
+          cd \
+            "${HOME}/reallymakepkg-src"
           make \
             -C \
               "${HOME}/reallymakepkg-src" \
