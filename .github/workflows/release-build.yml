@@ -1835,7 +1835,6 @@ jobs:
               "${_mingw_name}" >> \
               "${HOME}/makedepends-mingw"; \
           done
-          done
           for _pkg in $(cat "${HOME}/makedepends"); do \
             _depend_name="$( \
                 version-split \
