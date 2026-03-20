@@ -27,10 +27,10 @@
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
-_os="$( \
+_os="$(
   uname \
     -o)"
-_evmfs_available="$( \
+_evmfs_available="$(
   command \
     -v \
     "evmfs" || \
@@ -87,7 +87,7 @@ pkgname="evm-${_pkg}"
 pkgver="20250816"
 _gradle_pkgver="8.8"
 _commit="3a0a229cdd6e4b7e8621d34441d936282c3f5085"
-pkgrel=6
+pkgrel=7
 _pkgdesc=(
   "Provides metadata for EVM chains."
 )
@@ -271,7 +271,7 @@ package() {
       "${srcdir}/COPYING" \
       "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     if [[ "${_split}" == "true" ]]; then
-      _chains_amount="$( \
+      _chains_amount="$(
         cat \
           "${_chains_file}" | \
           jq \
@@ -290,7 +290,7 @@ package() {
                "0" \
                "${_index_end}"); do
         _jq_query="[.[]][${_index}]"
-        _network="$( \
+        _network="$(
           jq \
             "${_jq_query}" \
             "${_chains_file}")"
@@ -298,7 +298,7 @@ package() {
           "Network '${_index}'"
           "out of '${_index_end}'."
         )
-        _chain_id="$( \
+        _chain_id="$(
           echo \
             "${_network}" | \
             jq \
