@@ -87,7 +87,7 @@ pkgname="evm-${_pkg}"
 pkgver="20250816"
 _gradle_pkgver="8.8"
 _commit="3a0a229cdd6e4b7e8621d34441d936282c3f5085"
-pkgrel=11
+pkgrel=13
 _pkgdesc=(
   "Provides metadata for EVM chains."
 )
@@ -203,12 +203,18 @@ _license="COPYING"
 _license_sum='0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0'
 source+=(
   "${_src}"
-  "${_license}"
 )
 sha256sums+=(
   "${_sum}"
-  "${_license_sum}"
 )
+if [[ "${_os}" != "Msys2" ]]; then
+ source+=(
+   "${_license}"
+ )
+  sha256sums+=(
+    "${_license_sum}"
+  )
+fi
 validpgpkeys=(
   # Truocolo
   #   <truocolo@aol.com>
@@ -266,10 +272,12 @@ package() {
       -vDm644 \
       "${_chains_file}" \
       "${pkgdir}/usr/lib/evm-${_pkg}/chains.json"
-    install \
-      -vDm644 \
-      "${srcdir}/COPYING" \
-      "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    if [[ "${_os}" != "Msys2" ]]; then
+      install \
+        -vDm644 \
+        "${srcdir}/COPYING" \
+        "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    fi
     if [[ "${_split}" == "true" ]]; then
       _chains_amount="$(
         cat \
