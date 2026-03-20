@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0
 
 #    ----------------------------------------------------------------------
-#    Copyright © 2024, 2025  Pellegrino Prevete
+#    Copyright © 2024, 2025, 2026  Pellegrino Prevete
 #
 #    All rights reserved
 #    ----------------------------------------------------------------------
@@ -87,7 +87,7 @@ pkgname="evm-${_pkg}"
 pkgver="20250816"
 _gradle_pkgver="8.8"
 _commit="3a0a229cdd6e4b7e8621d34441d936282c3f5085"
-pkgrel=7
+pkgrel=8
 _pkgdesc=(
   "Provides metadata for EVM chains."
 )
