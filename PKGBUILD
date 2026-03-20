@@ -87,7 +87,7 @@ pkgname="evm-${_pkg}"
 pkgver="20250816"
 _gradle_pkgver="8.8"
 _commit="3a0a229cdd6e4b7e8621d34441d936282c3f5085"
-pkgrel=9
+pkgrel=10
 _pkgdesc=(
   "Provides metadata for EVM chains."
 )
@@ -178,7 +178,7 @@ if [[ "${_evmfs}" == "false" ]]; then
     if [[ "${_git_service}" == "github" ]]; then
       _src_name="${_pkg}.json"
       _uri="${_url_raw}/${_tag}/${_src_name}"
-      _sum="43dcec609e322444342fb4509d39a4345714f0fd59551f1133d19ef63c0ffec9"
+      _sum="e9cb2374b5e906a9b90da350919b2c88609214da650fd477d4ec0c7c33703799"
     elif [[ "${_git_service}" == "gitlab" ]]; then
       _src_name="${_tarname}.${_archive_format}"
       _uri="${_url}/-/archive/${_tag}/${_src_name}"
